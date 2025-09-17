@@ -103,25 +103,6 @@
             box-shadow: 0 5px 25px rgba(0,0,0,0.1);
         }
         
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        .btn-outline-light:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-        
         .divider {
             height: 3px;
             background: linear-gradient(to right, var(--primary), var(--secondary));
@@ -172,6 +153,12 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             color: white;
         }
+
+        .gif-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
@@ -213,7 +200,9 @@
                     <a href="https://choochshoot.github.io/dancepass/" target="_blank" class="demo-btn btn-lg px-4 py-2 me-3">Ver Demo</a>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="https://i.imgur.com/5R6h6Qn.png" class="img-fluid floating" alt="Sistema de accesos QR DancePass" style="max-width: 80%;">
+                    <div class="gif-container floating">
+                        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYyZnM1bTF5NTM0NmZ3djQ2enVlOXJ0bXpibHpjbGZ5MGJ5dGdmcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUA7aS269qm5PX7fa0/giphy.gif" class="img-fluid" alt="Sistema de accesos QR DancePass" style="max-width: 100%;">
+                    </div>
                 </div>
             </div>
         </div>
