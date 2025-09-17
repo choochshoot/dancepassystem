@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DancePass - Sistema de Accesos QR para Academias de Baile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff4e50;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: #f8f9fa;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .navbar {
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        
+        .hero-section {
+            padding: 7rem 0 5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,138.7C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            opacity: 0.1;
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 15px 0 0;
+            border-radius: 2px;
+        }
+        
+        .benefit-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            border: none;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .investment-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .divider {
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 60px;
+            margin: 1.5rem 0;
+            border-radius: 3px;
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 15px); }
+            100% { transform: translate(0, -0px); }
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .demo-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark gradient-bg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-qrcode me-2"></i>DancePass
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Características</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#investment">Valor Agregado</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="demo-btn ms-2 px-3" href="https://choochshoot.github.io/dancepass/" target="_blank">Ver Demo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section gradient-bg">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Revoluciona el acceso a tu academia con códigos QR</h1>
+                    <p class="lead mb-4">Sistema integral de gestión de accesos, asistencia y comunicación para academias de baile modernas.</p>
+                    <a href="https://choochshoot.github.io/dancepass/" target="_blank" class="demo-btn btn-lg px-4 py-2 me-3">Ver Demo</a>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="https://i.imgur.com/5R6h6Qn.png" class="img-fluid floating" alt="Sistema de accesos QR DancePass" style="max-width: 80%;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container py-5">
+            <h2 class="section-title">Características Destacadas</h2>
+            
+            <div class="row g-4 mt-4">
+                <!-- Feature 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mx-auto">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Envío de Códigos QR por WhatsApp</h4>
+                            <div class="divider mx-auto"></div>
+                            <p class="card-text">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Comunicación directa e instantánea</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Mensajes personalizables con plantillas</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Confirmación de entrega y lectura</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Sistema de Recordatorios de Pago</h4>
+                            <div class="divider mx-auto"></div>
+                            <p class="card-text">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Alertas automáticas de pagos próximos a vencer</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Comunicación masiva a múltiples alumnos</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Seguimiento de estado de notificaciones y pagos</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Beneficios Adicionales</h4>
+                            <div class="divider mx-auto"></div>
+                            <p class="card-text">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Reducción de morosidad en pagos</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Mejora en la comunicación con alumnos</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Experiencia moderna y preferida por jóvenes</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Integración Tecnológica</h4>
+                            <div class="divider mx-auto"></div>
+                            <p class="card-text">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>API de WhatsApp Business integrada</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Base de datos segura y protegida</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Interfaz intuitiva para administradores</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="row mt-5 pt-5 text-center">
+                <div class="col-md-4">
+                    <div class="stat-number">+90%</div>
+                    <p class="fw-medium">Reducción en pagos tardíos</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-number">+75%</div>
+                    <p class="fw-medium">Mejora en comunicación</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-number">+60%</div>
+                    <p class="fw-medium">Satisfacción del cliente</p>
+                </div>
+            </div>
+            
+            <!-- Demo CTA -->
+            <div class="text-center mt-5">
+                <a href="https://choochshoot.github.io/dancepass/" target="_blank" class="demo-btn btn-lg px-5 py-3">Ver Demo del Sistema</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Section -->
+    <section id="investment" class="py-5 bg-light">
+        <div class="container py-5">
+            <h2 class="section-title">Inversión y Valor Agregado</h2>
+            
+            <div class="row mt-4 align-items-center">
+                <div class="col-lg-6">
+                    <div class="investment-card card h-100">
+                        <div class="card-body p-5">
+                            <h3 class="card-title mb-4">Todo incluido en un solo sistema</h3>
+                            <p class="card-text mb-4">DancePass no es solo un sistema de control de asistencia, es una herramienta integral de comunicación y gestión para academias de baile modernas.</p>
+                            
+                            <div class="divider"></div>
+                            
+                            <h4 class="my-4">El sistema incluye:</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-3"><i class="fas fa-check text-success me-2"></i> Configuración inicial y personalización</li>
+                                        <li class="mb-3"><i class="fas fa-check text-success me-2"></i> Capacitación para el personal administrativo</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Actualizaciones periódicas del software</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-3"><i class="fas fa-check text-success me-2"></i> Soporte técnico durante 6 meses</li>
+                                        <li class="mb-3"><i class="fas fa-check text-success me-2"></i> Integración con WhatsApp Business</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Base de datos segura y protegida</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <div class="investment-card card h-100">
+                        <div class="card-body p-5 text-center">
+                            <h3 class="card-title mb-4">¿Por qué elegir DancePass?</h3>
+                            <div class="feature-icon mx-auto mb-4">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="card-text mb-4">Nuestra solución está diseñada específicamente para academias de baile, entendiendo sus necesidades particulares y desafíos de gestión.</p>
+                            
+                            <div class="divider mx-auto"></div>
+                            
+                            <div class="mt-4">
+                                <h5 class="mb-3">Sistema integral que incluye:</h5>
+                                <div class="d-flex flex-wrap justify-content-center">
+                                    <span class="badge bg-primary m-1 p-2">Control de accesos</span>
+                                    <span class="badge bg-primary m-1 p-2">Gestión de pagos</span>
+                                    <span class="badge bg-primary m-1 p-2">Comunicación WhatsApp</span>
+                                    <span class="badge bg-primary m-1 p-2">Base de datos segura</span>
+                                    <span class="badge bg-primary m-1 p-2">Recordatorios automáticos</span>
+                                    <span class="badge bg-primary m-1 p-2">Panel administrativo</span>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <a href="https://choochshoot.github.io/dancepass/" target="_blank" class="demo-btn btn-lg px-5">Probar Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="py-5 gradient-bg">
+        <div class="container py-5 text-center text-white">
+            <h2 class="display-5 fw-bold mb-4">¿Listo para modernizar tu academia?</h2>
+            <p class="lead mb-5">Implementa el sistema de accesos QR más completo del mercado y mejora la gestión de tu academia</p>
+            <a href="https://choochshoot.github.io/dancepass/" target="_blank" class="demo-btn btn-lg px-5 py-3">Ver Demo Ahora</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h4 class="mb-4"><i class="fas fa-qrcode me-2"></i>DancePass</h4>
+                    <p>Sistema integral de gestión de accesos, comunicación y control para academias de baile modernas.</p>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <h4 class="mb-4">Enlaces Rápidos</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="#features" class="text-white text-decoration-none">Características</a></li>
+                        <li><a href="#investment" class="text-white text-decoration-none">Valor Agregado</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 DancePass. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
